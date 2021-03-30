@@ -32,6 +32,9 @@ node_modules
 *.css.map
 *.css.map.map
 
+#Ignoring sites/default
+sites/default/*
+
 # Ignore default text files
 /CHANGELOG.txt
 /COPYRIGHT.txt

@@ -1,0 +1,4 @@
+name: movie reservation
+description: Movie controller which will at first return just a twig page
+type: module
+core_version_requirement: ^8 || ^9
