@@ -1,0 +1,6 @@
+movie_reservation_controller.article_list:
+  path: '/movies/listing'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::page'
+  requirements:
+    _permission: 'access content'

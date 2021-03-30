@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\movie_controller\Controller;
+namespace Drupal\movie_reservation_controller\Controller;
 
-class MovieController {
+class MovieReservationController {
     
     public function page(){
 
