@@ -21,6 +21,10 @@
 # Ignore all log files
 *.log
 
+#Ignoring all sites/default folders
+
+/sites/default/*
+
 # Ignore node modules
 node_modules
 
