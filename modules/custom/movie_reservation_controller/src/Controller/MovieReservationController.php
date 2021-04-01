@@ -6,19 +6,13 @@ class MovieReservationController {
     
     public function page(){
 
-        $items = array(
-            array('name' => 'Movie one'),
-            array('name' => 'Movie two'),
-            array('name' => 'Movie three'),
-            array('name' => 'Movie four'),
-            array('name' => 'Movie five'),
-        );
+        $nids = \Drupal::entityQuery('node')->condition('type', 'movies')->execute();
+        $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
 
-
-        return array(
+        return [
             '#theme' => 'article_list',
-            '#items' => $items,
-            '#title' => 'Movie list'
-        );
+            '#items' => $nodes,
+            '#title' => 'Movies testing'
+        ];
     }
 }

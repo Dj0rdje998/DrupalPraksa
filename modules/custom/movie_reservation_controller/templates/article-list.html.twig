@@ -1,9 +1,14 @@
 <h4>{{ title}}</h4>
 
 <ul>
-    {% for article in items %}
+    {%  for article in items %}
+        
         <li>
-            {{article.name}}
+             {{ drupal_entity('node', article.id ) }}
         </li>
     {% endfor %}
 </ul>
+
+
+
+  
