@@ -2,8 +2,9 @@
 
 <ul>
     {%  for article in items %}
+        
         <li>
-             {{ drupal_entity('node', loop.index ,'movies') }}
+             {{ drupal_entity('node', article.id ) }}
         </li>
     {% endfor %}
 </ul>
