@@ -7,18 +7,24 @@ class MovieReservationController {
     public function page(){
 
         $items = array(
-            array('name' => 'Movie one'),
-            array('name' => 'Movie two'),
-            array('name' => 'Movie three'),
-            array('name' => 'Movie four'),
-            array('name' => 'Movie five'),
+            array('name' => 'Name 1'),
+            array('name' => 'Name 2'),
+            array('name' => 'Name 3'),
         );
+
+        $nids = \Drupal::entityQuery('node')->condition('type', 'movies')->execute();
+        $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+
+
+        // drupal_entity($nodes);
+
+        // var_dump($items);
 
 
         return array(
             '#theme' => 'article_list',
-            '#items' => $items,
-            '#title' => 'Movie list'
+            '#items' => $nodes,
+            '#title' => 'Movies testing'
         );
     }
 }
