@@ -1,14 +1,13 @@
 <h4>{{ title}}</h4>
 
-<ul>
-    {%  for article in items %}
-        
-        <li>
-             {{ drupal_entity('node', article.id ) }}
-        </li>
-    {% endfor %}
-</ul>
+<form>
+  <label>Please select a movie genre for which you would like to make a reservation:</label>
+      <select id="movies">
 
-
-
-  
+            {%  for item in items %}
+                <option value="{{ item.id }}">{{ drupal_entity('taxonomy_term', item.id) }}</option>
+            {% endfor %}
+    
+        </select>
+    <input id="submit" type="submit">
+</form>
