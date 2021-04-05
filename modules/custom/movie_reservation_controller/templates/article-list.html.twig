@@ -1,8 +1,8 @@
 <h4>{{ title}}</h4>
 
-<form>
-  <label>Please select a movie genre for which you would like to make a reservation:</label>
-      <select id="movies">
+<form method="GET">
+  <label for="movie_type">Please select a movie genre for which you would like to make a reservation:</label>
+      <select id="movie_type" name="movie_type">
 
             {%  for item in items %}
                 <option value="{{ item.id }}">{{ drupal_entity('taxonomy_term', item.id) }}</option>
@@ -11,3 +11,24 @@
         </select>
     <input id="submit" type="submit">
 </form>
+
+<script>
+  
+  let submit = document.getElementById("submit");
+
+  submit.addEventListener('click',function(e){
+  e.preventDefault();
+
+  let dropdown = document.getElementById("movie_type");
+  let result = dropdown.value;
+
+  let url = '/movie/type/' + result;
+
+  console.log(url);
+
+  window.location.href = url;
+
+
+  })
+  
+</script>

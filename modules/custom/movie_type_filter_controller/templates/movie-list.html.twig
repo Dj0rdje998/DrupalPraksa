@@ -1,0 +1,48 @@
+<style>
+
+   input:checked + label {
+    background-color: red;
+    color: white;
+}
+
+</style>
+
+<h4>{{ title}}</h4>
+
+
+<form action="/action_page.php">
+
+    {%  for article in items %}
+        <input type="checkbox" name="myCheck" onclick="myFunction()" value="{{ article.id }} ">
+        <label for="vehicle1" class="checkbox"> {{ drupal_field('title', 'node', article.id) }}</label><br>
+    {% endfor %}
+
+</form>
+
+<button type="button" id="reserve" style="display:none;">Reserve movie</button>
+
+<script>
+    function myFunction(){
+        
+
+        var inputElems = document.getElementsByTagName("input");
+        var reserve = document.getElementById("reserve");
+        var count = 0;
+
+       for (var i=0; i<inputElems.length; i++) {
+        if (inputElems[i].type === "checkbox" && inputElems[i].checked === true) {
+          count++;
+        }
+      }
+      if(count > 0){
+         reserve.style.display = "block";
+      }
+      else{
+         reserve.style.display = "none";
+      }
+
+    }
+    
+
+
+</script>
