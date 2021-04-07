@@ -1,38 +1,11 @@
 <h4>{{ title}}</h4>
 
-<style>
+{{ attach_library('movie_type_filter_controller/form-styling') }}
 
-   input:checked + label {
-    background-color: red;
-    color: white;
-}
-
-.popup{
-    z-index:1;
-    position:absolute;
-    top:50%;
-    left:50%;
-    background-color:white;
-    width:70vw;
-    height:80vh;
-    transform: translate(-50%,-50%);
-}
-
-.cancel_btn{
-    display:block;
-    position:absolute;
-    bottom:0;
-    left:50%;
-    transform: translate(-50%,-50%);
-    background-color:red;
-    border:none;
-    color:white;
-}
-
-</style>
 
 <div class="popup" id="popup">
     <h1 style="text-align: center;">Select date for movie</h1>
+    
     <button type="button" class="cancel_btn" id="cancel" onclick="cancelPopup()">Cancel</button>
 
 </div>
@@ -75,10 +48,6 @@
 
 <script>
 
-  let movie_label = $( "#movie_label" );
-  
-  let myCheck = $( ".myCheck" );
-
   let movie_form = $("#movie_form");
 
   let movies_for_type = $( ".movies_for_type" ).hide();
@@ -106,7 +75,7 @@
 
        resData.forEach(response => {
 
-        $('<input />', { type: 'checkbox', id: 'cb' + response.id, value: response.id + ' ' + response.title + ' '+ response.reservation_period,  name:"myCheck"})
+        $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
         .on("click",myFunction).appendTo(movie_form);
         
         $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
@@ -140,10 +109,46 @@
   function openPopup(){
 
     popup.show();
+    
 
-    var array = $.map($('input[name="myCheck"]:checked'), function(c){return c.value; });
+    var array = $.map($('input[name="myCheck"]:checked'), function(c){
+      
+      var res = c.value.split("|");
 
-    console.log(array);
+      return {
+        id : res[0],
+        title : res[1],
+        reservation_period : res[2],
+      };
+
+      });
+
+
+     $('#popup')
+      .append(
+        $(document.createElement('label')).prop({
+          for: 'movies'
+        }).html('Choose your reservation date: ')
+      )
+      .append(
+        $(document.createElement('select')).prop({
+          id: 'movies',
+        })
+      )
+ 
+    array.forEach(function (arrayItem) {
+
+      let days =arrayItem.reservation_period.split(",");
+
+       days.forEach(element => {
+        $("#movies").append($(document.createElement('option')).prop({
+          //Dodati i vreme koje je izabrano u value
+          value: arrayItem.id,
+          text: arrayItem.title + " " + element
+        }))
+      })  
+
+    });
 
   }
 

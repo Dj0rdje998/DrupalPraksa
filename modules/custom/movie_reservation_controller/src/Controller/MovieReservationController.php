@@ -7,7 +7,7 @@ class MovieReservationController {
     public function page(){
 
         $vid = 'movie_type';
-        /** @var \Drupal\taxonomy\Entity\Term[] $terms */
+       
         $terms =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => $vid]);
 
         return [
@@ -15,5 +15,6 @@ class MovieReservationController {
             '#items' => $terms,
             '#title' => 'Welcome to our movie reservation page'
         ];
+        
     }
 }

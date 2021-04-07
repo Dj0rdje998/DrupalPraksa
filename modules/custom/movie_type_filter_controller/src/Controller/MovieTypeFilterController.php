@@ -26,7 +26,6 @@ class MovieTypeFilterController {
 
         }
 
-
         foreach ($values as $value) {
           
           
@@ -39,6 +38,6 @@ class MovieTypeFilterController {
         }
 
         return new JsonResponse([ 'data' => $rezultat, 'method' => 'GET', 'status'=> 200]);
-        
+
     }
 }

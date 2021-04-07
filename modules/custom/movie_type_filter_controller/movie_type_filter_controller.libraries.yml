@@ -1,0 +1,5 @@
+form-styling:
+  version: 1.x
+  css:
+    layout:
+      css/form-styling.css: {}
