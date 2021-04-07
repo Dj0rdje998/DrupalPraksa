@@ -1,10 +1,8 @@
 <style>
-
    input:checked + label {
     background-color: red;
     color: white;
 }
-
 </style>
 
 <h4>{{ title}}</h4>
@@ -24,11 +22,9 @@
 <script>
     function myFunction(){
         
-
         var inputElems = document.getElementsByTagName("input");
         var reserve = document.getElementById("reserve");
         var count = 0;
-
        for (var i=0; i<inputElems.length; i++) {
         if (inputElems[i].type === "checkbox" && inputElems[i].checked === true) {
           count++;
@@ -40,9 +36,6 @@
       else{
          reserve.style.display = "none";
       }
-
     }
     
-
-
 </script>

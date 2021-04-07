@@ -1,34 +1,154 @@
 <h4>{{ title}}</h4>
 
-<form method="GET">
+<style>
+
+   input:checked + label {
+    background-color: red;
+    color: white;
+}
+
+.popup{
+    z-index:1;
+    position:absolute;
+    top:50%;
+    left:50%;
+    background-color:white;
+    width:70vw;
+    height:80vh;
+    transform: translate(-50%,-50%);
+}
+
+.cancel_btn{
+    display:block;
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color:red;
+    border:none;
+    color:white;
+}
+
+</style>
+
+<div class="popup" id="popup">
+    <h1 style="text-align: center;">Select date for movie</h1>
+    <button type="button" class="cancel_btn" id="cancel" onclick="cancelPopup()">Cancel</button>
+
+</div>
+
+<form>
   <label for="movie_type">Please select a movie genre for which you would like to make a reservation:</label>
-      <select id="movie_type" name="movie_type">
+      <select id="movie_type">
 
             {%  for item in items %}
                 <option value="{{ item.id }}">{{ drupal_entity('taxonomy_term', item.id) }}</option>
             {% endfor %}
     
         </select>
-    <input id="submit" type="submit">
+        
+<button type="button" id="submit">Choose movie type</button>
+
+
 </form>
 
+<div class="movies_for_type" style="margin-top:50px;">
+
+  <h1>We have found thease movies for the specified type</h1>
+
+  <form id="movie_form">
+
+
+  </form>
+
+  <button type="button" id="reserve" onclick="openPopup()">Reserve movie</button>
+
+</div>
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+
+
 <script>
+
+  let movie_label = $( "#movie_label" );
   
-  let submit = document.getElementById("submit");
+  let myCheck = $( ".myCheck" );
 
-  submit.addEventListener('click',function(e){
-  e.preventDefault();
+  let movie_form = $("#movie_form");
 
-  let dropdown = document.getElementById("movie_type");
-  let result = dropdown.value;
+  let movies_for_type = $( ".movies_for_type" ).hide();
 
-  let url = '/movie/type/' + result;
-
-  console.log(url);
-
-  window.location.href = url;
-
-
-  })
+  let popup = $("#popup").hide();
   
+  let reserve = $("#reserve").hide();
+
+  let table = document.getElementById('di-locations');
+
+  $( "#submit" ).click(function(e) {
+    e.preventDefault();
+
+    let movie_type = $("#movie_type").val();
+
+    $.ajax({
+      method:'GET',
+      url:'http://drupal.praksa/movie/type/'+movie_type,
+      success:function(response)
+      {
+       let resData = response["data"];
+
+       movie_form.html("");
+
+       resData.forEach(response => {
+
+        $('<input />', { type: 'checkbox', id: 'cb' + response.id, value: response.id + ' ' + response.title + ' '+ response.reservation_period,  name:"myCheck"})
+        .on("click",myFunction).appendTo(movie_form);
+        
+        $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
+
+        $('<br/>').appendTo(movie_form);
+      });
+
+      }
+      
+    });
+
+   movies_for_type.show();
+
+   
+
+  });
+
+  function myFunction(){
+
+    let checkboxes = $("input[type='checkbox']")
+
+    if(checkboxes.is(":checked")){
+      reserve.show();
+    }
+    else{
+      reserve.hide();
+    }
+
+  }
+
+  function openPopup(){
+
+    popup.show();
+
+    var array = $.map($('input[name="myCheck"]:checked'), function(c){return c.value; });
+
+    console.log(array);
+
+  }
+
+  function cancelPopup(){
+        popup.hide();
+
+    }
+
 </script>

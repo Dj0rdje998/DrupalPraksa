@@ -3,25 +3,18 @@
 namespace Drupal\movie_type_filter_controller\Controller;
 
 use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MovieTypeFilterController {
 
     public function filter($movie_type){
 
-    //    $nids = \Drupal::entityQuery('node')->condition('type', 'movies')->execute();
-    //    $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
-
-
-    //     $term = Term::load($movie_type);
-    //     $name = $term->getName();
-
-        
-
         $termIds = (array) $movie_type;
         if(empty($termIds)){
           return NULL;
         }
-      
+
+        $rezultat = [];
         $query = \Drupal::database()->select('taxonomy_index', 'ti');
         $query->fields('ti', array('nid'));
         $query->condition('ti.tid', $termIds, 'IN');
@@ -32,14 +25,20 @@ class MovieTypeFilterController {
           $values =  \Drupal\node\Entity\Node::loadMultiple($nodeIds);
 
         }
-      
 
 
+        foreach ($values as $value) {
+          
+          
+          $rezultat[] = [
+            "id" => $value->id(),
+            "title" => $value->title->getString(),
+            "description" => $value->get('field_description')->value,
+            "reservation_period" =>$value->field_reservation_period->getString()
+          ];    
+        }
 
-        return [
-            '#theme' => 'movie-list',
-            '#items' => $values,
-            '#title' => 'We have thease movies available'
-        ];
+        return new JsonResponse([ 'data' => $rezultat, 'method' => 'GET', 'status'=> 200]);
+        
     }
 }
