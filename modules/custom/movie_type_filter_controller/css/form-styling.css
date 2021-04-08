@@ -35,3 +35,11 @@ input:checked + label {
     border:none;
     color:white;
 }
+
+.movies_for_type{
+    margin-top:50px;
+}
+
+.popup_title{
+    text-align: center;
+}
