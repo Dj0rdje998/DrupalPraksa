@@ -14,14 +14,14 @@ class MovieTypeFilterController {
           return NULL;
         }
 
-        $rezultat = [];
+        $result = [];
         $query = \Drupal::database()->select('taxonomy_index', 'ti');
         $query->fields('ti', array('nid'));
         $query->condition('ti.tid', $termIds, 'IN');
         $query->distinct(TRUE);
-        $result = $query->execute();
+        $nodeId = $query->execute();
       
-        if($nodeIds = $result->fetchCol()){
+        if($nodeIds = $nodeId->fetchCol()){
           $values =  \Drupal\node\Entity\Node::loadMultiple($nodeIds);
 
         }
@@ -29,7 +29,7 @@ class MovieTypeFilterController {
         foreach ($values as $value) {
           
           
-          $rezultat[] = [
+          $result[] = [
             "id" => $value->id(),
             "title" => $value->title->getString(),
             "description" => $value->get('field_description')->value,
@@ -37,7 +37,7 @@ class MovieTypeFilterController {
           ];    
         }
 
-        return new JsonResponse([ 'data' => $rezultat, 'method' => 'GET', 'status'=> 200]);
+        return new JsonResponse([ 'data' => $result, 'method' => 'GET', 'status'=> 200]);
 
     }
 }

@@ -62,22 +62,19 @@
   $( "#submit" ).click(function(e) {
     e.preventDefault();
 
-    let movie_type = $("#movie_type").val();
-
     $.ajax({
       method:'GET',
-      url:'http://drupal.praksa/movie/type/'+movie_type,
+      url:'http://drupal.praksa/movie/type/'+$("#movie_type").val(),
       success:function(response)
       {
-       let resData = response["data"];
 
        movie_form.empty();
        reserve.hide();
 
-       resData.forEach(response => {
+       response["data"].forEach(response => {
 
         $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
-        .on("click",myFunction).appendTo(movie_form);
+        .on("click",reserveButtonShow).appendTo(movie_form);
         
         $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
 
@@ -94,11 +91,9 @@
 
   });
 
-  function myFunction(){
+  function reserveButtonShow(){
 
-    let checkboxes = $("input[type='checkbox']")
-
-    if(checkboxes.is(":checked")){
+    if($("input[type='checkbox']").is(":checked")){
       reserve.show();
     }
     else{
@@ -139,9 +134,7 @@
  
     array.forEach(function (arrayItem) {
 
-      let days =arrayItem.reservation_period.split(",");
-
-       days.forEach(element => {
+       arrayItem.reservation_period.split(",").forEach(element => {
         $("#movies").append($(document.createElement('option')).prop({
           value: arrayItem.id + " " + element,
           text: arrayItem.title + " " + element
