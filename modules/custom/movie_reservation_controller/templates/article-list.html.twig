@@ -1,14 +1,153 @@
 <h4>{{ title}}</h4>
 
-<ul>
-    {%  for article in items %}
+{{ attach_library('movie_type_filter_controller/form-styling') }}
+
+
+<div class="popup" id="popup">
+    <h1 class="popup_title">Select date for movie</h1>
+    
+    <button type="button" class="cancel_btn" id="cancel">Cancel</button>
+
+</div>
+
+<form>
+  <label for="movie_type">Please select a movie genre for which you would like to make a reservation:</label>
+      <select id="movie_type">
+
+            {%  for item in items %}
+                <option value="{{ item.id }}">{{ drupal_entity('taxonomy_term', item.id) }}</option>
+            {% endfor %}
+    
+        </select>
         
-        <li>
-             {{ drupal_entity('node', article.id ) }}
-        </li>
-    {% endfor %}
-</ul>
+<button type="button" id="submit">Choose movie type</button>
+
+
+</form>
+
+<div class="movies_for_type">
+
+  <h1>We have found thease movies for the specified type</h1>
+
+  <form id="movie_form">
+
+
+  </form>
+
+  <button type="button" id="reserve">Reserve movie</button>
+
+</div>
 
 
 
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+
+
+<script>
+
+  const movie_form = $("#movie_form");
   
+  const reserve = $("#reserve").click(openPopup).hide();
+
+  const popup = $("#popup").hide();
+
+  $( ".movies_for_type" ).hide();
+  
+
+  $( "#cancel" ).click(cancelPopup);
+
+  $( "#submit" ).click(function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      method:'GET',
+      url:'http://drupal.praksa/movie/type/'+$("#movie_type").val(),
+      success:function(response)
+      {
+
+       movie_form.empty();
+       reserve.hide();
+
+       response["data"].forEach(response => {
+
+        $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
+        .on("click",reserveButtonShow).appendTo(movie_form);
+        
+        $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
+
+        $('<br/>').appendTo(movie_form);
+      });
+
+      }
+      
+    });
+
+   $( ".movies_for_type" ).show();
+
+   
+
+  });
+
+  function reserveButtonShow(){
+
+    if($("input[type='checkbox']").is(":checked")){
+      reserve.show();
+    }
+    else{
+      reserve.hide();
+    }
+
+  }
+
+  function openPopup(){
+
+    popup.show();
+    
+
+    var array = $.map($('input[name="myCheck"]:checked'), function(c){
+      
+      var res = c.value.split("|");
+
+      return {
+        id : res[0],
+        title : res[1],
+        reservation_period : res[2],
+      };
+
+      });
+
+
+     popup
+      .append(
+        $(document.createElement('label')).prop({
+          for: 'movies'
+        }).html('Choose your reservation date: ')
+      )
+      .append(
+        $(document.createElement('select')).prop({
+          id: 'movies',
+        })
+      )
+ 
+    array.forEach(function (arrayItem) {
+
+       arrayItem.reservation_period.split(",").forEach(element => {
+        $("#movies").append($(document.createElement('option')).prop({
+          value: arrayItem.id + " " + element,
+          text: arrayItem.title + " " + element
+        }))
+      })  
+
+    });
+
+  }
+
+  function cancelPopup(){
+        popup.hide();
+
+    }
+
+</script>

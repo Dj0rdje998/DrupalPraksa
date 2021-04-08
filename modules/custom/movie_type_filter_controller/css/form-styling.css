@@ -1,0 +1,45 @@
+input:checked + label {
+    background-color: red;
+    color: white;
+}
+
+.popup{
+    z-index:1;
+    position:absolute;
+    top:50%;
+    left:50%;
+    background-color:white;
+    width:70vw;
+    height:80vh;
+    transform: translate(-50%,-50%);
+}
+
+.cancel_btn{
+    display:block;
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color:red;
+    border:none;
+    color:white;
+}
+
+.submit_btn{
+    display:block;
+    position:absolute;
+    bottom:0;
+    left:40%;
+    transform: translate(-50%,-50%);
+    background-color:green;
+    border:none;
+    color:white;
+}
+
+.movies_for_type{
+    margin-top:50px;
+}
+
+.popup_title{
+    text-align: center;
+}

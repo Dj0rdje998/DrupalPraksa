@@ -1,0 +1,7 @@
+movie_type_filter_controller.movie-list:
+  path: '/movie/type/{movie_type}'
+  defaults:
+    _controller: '\Drupal\movie_type_filter_controller\Controller\MovieTypeFilterController::filter'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
