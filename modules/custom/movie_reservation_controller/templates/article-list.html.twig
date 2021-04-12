@@ -73,13 +73,13 @@
 
        response["data"].forEach(response => {
 
-        $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
-        .on("click",reserveButtonShow).appendTo(movie_form);
-        
-        $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
+          $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
+          .on("click",reserveButtonShow).appendTo(movie_form);
+          
+          $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
 
-        $('<br/>').appendTo(movie_form);
-      });
+          $('<br/>').appendTo(movie_form);
+        });
 
       }
       
