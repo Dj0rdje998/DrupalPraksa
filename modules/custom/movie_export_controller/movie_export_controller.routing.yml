@@ -1,8 +1,0 @@
-movie_export_controller.article_list:
-  path: '/movie-exporter'
-  defaults:
-    _controller: '\Drupal\movie_export_controller\Controller\MovieExportController::page'
-  options:
-    _admin_route: TRUE
-  requirements:
-    _permission: 'administer blocks'

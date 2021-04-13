@@ -1,4 +1,0 @@
-administer export-list:
-  title: 'Movie export list'
-  description: 'Allows the ability to export data'
-  restrict access: true

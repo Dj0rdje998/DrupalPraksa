@@ -1,6 +1,0 @@
-data_import.example:
-  path: '/data-import'
-  defaults:
-    _controller: '\Drupal\data_import\Controller\DataImportController::build'
-  requirements:
-    _permission: 'access content'

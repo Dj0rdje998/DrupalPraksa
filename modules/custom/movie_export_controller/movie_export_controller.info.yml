@@ -1,4 +1,0 @@
-name: movie export
-description: Movie export controller which will export from database to xml or csv file formats
-type: module
-core_version_requirement: ^8 || ^9
