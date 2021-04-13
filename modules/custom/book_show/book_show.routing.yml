@@ -1,6 +1,0 @@
-book_show.data_list:
-  path: '/book-show'
-  defaults:
-    _controller: '\Drupal\book_show\Controller\BookShowController::build'
-  requirements:
-    _permission: 'access content'

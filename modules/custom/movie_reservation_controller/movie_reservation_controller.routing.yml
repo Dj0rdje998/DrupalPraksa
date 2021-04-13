@@ -4,3 +4,44 @@ movie_reservation_controller.article_list:
     _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::page'
   requirements:
     _permission: 'access content'
+  
+movie_reservation_controller.upload_reservation:
+  path: '/reservation-upload/{customer_name}/{movie}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::save'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+
+movie_reservation_controller.movie-filter:
+  path: '/movie/type/{movie_type}'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::filter'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+
+movie_reservation_controller.export_list:
+  path: '/movie-exporter'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::export'
+  options:
+    _admin_route: TRUE
+  requirements:
+    _permission: 'administer blocks'
+
+movie_reservation_controller.data_list:
+  path: '/book-show'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::show_book'
+  requirements:
+    _permission: 'access content'
+
+movie_reservation_controller.import:
+  path: '/data-import'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::import_book'
+  requirements:
+    _permission: 'access content'
+
