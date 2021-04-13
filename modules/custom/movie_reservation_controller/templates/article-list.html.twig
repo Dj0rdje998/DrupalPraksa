@@ -6,8 +6,11 @@
 <div class="popup" id="popup">
     <h1 class="popup_title">Select date for movie</h1>
 
-     <input type="text" id="customer_name" name="customer_name" placeholder="Please enter your name"><br>
+    <div id="popup_response_message"></div>
+
+    <input type="text" id="customer_name" name="customer_name" placeholder="Please enter your name"><br>
     
+
     <button type="button" class="cancel_btn" id="cancel">Cancel</button>
     <button type="button" class="submit_btn" id="submit_popup">Submit</button>
 
@@ -62,6 +65,8 @@
 
   $( "#cancel" ).click(cancelPopup);
 
+  $("#submit_popup").click(submitReservation);
+
   $( "#submit" ).click(function(e) {
     e.preventDefault();
 
@@ -74,9 +79,10 @@
        movie_form.empty();
        reserve.hide();
 
+
        response["data"].forEach(response => {
 
-          $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.reservation_period)
+          $('<input />', { type: 'checkbox', id: 'cb' + response.id,  name:"myCheck"}).val( response.id + "|" + response.title + "|"+ response.genre + "|"+ response.reservation_period)
           .on("click",reserveButtonShow).appendTo(movie_form);
           
           $('<label />', { 'for': 'cb' + response.id, text: response.title }).appendTo(movie_form);
@@ -117,7 +123,8 @@
       return {
         id : res[0],
         title : res[1],
-        reservation_period : res[2],
+        genre : res[2],
+        reservation_period : res[3],
       };
 
       });
@@ -139,7 +146,7 @@
 
        arrayItem.reservation_period.split(",").forEach(element => {
         $("#movies").append($(document.createElement('option')).prop({
-          value: arrayItem.id + " " + element,
+          value: arrayItem.id + "|" + arrayItem.title + "|" + arrayItem.genre + "|" +  element,
           text: arrayItem.title + " " + element
         }))
       })  
@@ -149,8 +156,21 @@
   }
 
   function cancelPopup(){
-        popup.hide();
+    popup.hide();
+  }
 
-    }
+  function submitReservation(){
+
+    $.ajax({
+      method:'GET',
+      url:'/reservation-upload/'+$("#customer_name").val()+'/'+$("#movies").val(),
+      success:function(response)
+      {
+        $("#popup_response_message").html(response['data']);
+      }
+      
+    });
+
+  }
 
 </script>

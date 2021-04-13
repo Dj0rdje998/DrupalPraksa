@@ -1,0 +1,8 @@
+reservation_upload.example:
+  path: '/reservation-upload/{customer_name}/{movie}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\reservation_upload\Controller\ReservationUploadController::build'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
