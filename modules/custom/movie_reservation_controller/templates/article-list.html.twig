@@ -5,8 +5,11 @@
 
 <div class="popup" id="popup">
     <h1 class="popup_title">Select date for movie</h1>
+
+     <input type="text" id="customer_name" name="customer_name" placeholder="Please enter your name"><br>
     
     <button type="button" class="cancel_btn" id="cancel">Cancel</button>
+    <button type="button" class="submit_btn" id="submit_popup">Submit</button>
 
 </div>
 
@@ -119,18 +122,18 @@
 
       });
 
-
-     popup
-      .append(
-        $(document.createElement('label')).prop({
-          for: 'movies'
-        }).html('Choose your reservation date: ')
-      )
-      .append(
-        $(document.createElement('select')).prop({
-          id: 'movies',
-        })
-      )
+      
+      popup
+        .append(
+          $(document.createElement('label')).prop({
+            for: 'movies'
+          }).html('Choose your reservation date: ')
+        )
+        .append(
+          $(document.createElement('select')).prop({
+            id: 'movies',
+          })
+        )
  
     array.forEach(function (arrayItem) {
 
