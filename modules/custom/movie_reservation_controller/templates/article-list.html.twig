@@ -5,6 +5,8 @@
 
 <div class="popup" id="popup">
     <h1 class="popup_title">Select date for movie</h1>
+
+     <input type="text" id="customer_name" name="customer_name" placeholder="Please enter your name"><br>
     
     <button type="button" class="cancel_btn" id="cancel">Cancel</button>
     <button type="button" class="submit_btn" id="submit_popup">Submit</button>
@@ -120,15 +122,6 @@
 
       });
 
-
-     popup
-     .append(
-       $(document.createElement("input")).prop({
-         type:"text",
-         name:"curstomer_name",
-         placeholder:"Enter your name"
-       }))
-      .append( $(document.createElement("br")))
       
       popup
         .append(
