@@ -32,7 +32,7 @@ class MovieTypeFilterController {
           $result[] = [
             "id" => $value->id(),
             "title" => $value->title->getString(),
-            "description" => $value->get('field_description')->value,
+            "genre" => $value->field_movie_type->getString(),
             "reservation_period" =>$value->field_reservation_period->getString()
           ];    
         }
