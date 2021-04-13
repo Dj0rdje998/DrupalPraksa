@@ -11,68 +11,107 @@ class MovieReservationController {
 
     public function page(){
 
-        $vid = 'movie_type';
-       
-        $terms =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => $vid]);
+      $vid = 'movie_type';
+      
+      $terms =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => $vid]);
 
-        return [
-            '#theme' => 'article_list',
-            '#items' => $terms,
-            '#title' => 'Welcome to our movie reservation page'
-        ];
+      return [
+          '#theme' => 'article_list',
+          '#items' => $terms,
+          '#title' => 'Welcome to our movie reservation page'
+      ];
         
     }
 
     public function filter($movie_type){
 
-        $termIds = (array) $movie_type;
-        if(empty($termIds)){
-          return NULL;
-        }
+      $termIds = (array) $movie_type;
+      if(empty($termIds)){
+        return NULL;
+      }
 
-        $result = [];
-        $query = \Drupal::database()->select('taxonomy_index', 'ti');
-        $query->fields('ti', array('nid'));
-        $query->condition('ti.tid', $termIds, 'IN');
-        $query->distinct(TRUE);
-        $nodeId = $query->execute();
-      
-        if($nodeIds = $nodeId->fetchCol()){
-          $values =  \Drupal\node\Entity\Node::loadMultiple($nodeIds);
+      $result = [];
+      $query = \Drupal::database()->select('taxonomy_index', 'ti');
+      $query->fields('ti', array('nid'));
+      $query->condition('ti.tid', $termIds, 'IN');
+      $query->distinct(TRUE);
+      $nodeId = $query->execute();
+    
+      if($nodeIds = $nodeId->fetchCol()){
+        $values =  \Drupal\node\Entity\Node::loadMultiple($nodeIds);
 
-        }
+      }
 
-        foreach ($values as $value) {
-          
-          
-          $result[] = [
-            "id" => $value->id(),
-            "title" => $value->title->getString(),
-            "genre" => $value->field_movie_type->getString(),
-            "reservation_period" =>$value->field_reservation_period->getString()
-          ];    
-        }
+      foreach ($values as $value) {
+        
+        
+        $result[] = [
+          "id" => $value->id(),
+          "title" => $value->title->getString(),
+          "genre" => $value->field_movie_type->getString(),
+          "reservation_period" =>$value->field_reservation_period->getString()
+        ];    
+      }
 
-        return new JsonResponse([ 'data' => $result, 'method' => 'GET', 'status'=> 200]);
+      return new JsonResponse([ 'data' => $result, 'method' => 'GET', 'status'=> 200]);
 
-    }
+    } 
 
     public function save($customer_name,$movie){
 
-          $movie_data = explode("|", $movie);
-      
-          $connection = \Drupal\Core\Database\Database::getConnection();
-          $connection->insert('reservations')->fields([ 'day_of_reservation' => $movie_data[3],'time_of_reservation' => date('Y-m-d h:i:s'), 'reserved_movie_name' => $movie_data[1], 'reserved_movie_genre' => $movie_data[2], 'customer_name' => $customer_name ]) ->execute();
+      $movie_data = explode("|", $movie);
 
-          return new JsonResponse([ 'data' => 'Reservation successfully saved to the database', 'method' => 'GET', 'status'=> 200]);
+      $database = \Drupal::database();
+      $query = $database->query('SELECT * FROM reservations WHERE reserved_movie_name = :reserved_movie_name AND day_of_reservation = :day_of_reservation', [
+        ':reserved_movie_name' => $movie_data[1],
+        ':day_of_reservation' => $movie_data[3]
+      ]);
+      $result = $query->fetchAll();
+
+      $resultMovie = Node::load($movie_data[0]);
+
+      if ($resultMovie instanceof Node){
+
+        $days = explode(",",$resultMovie->field_reservation_period->getString());
+
+        foreach ($days as $key => $day) {
+          
+          if(strcmp($day, $movie_data[3]) == 0){
+            if(count($result) >= (int)$resultMovie->field_number_of_attendants->value){
+              unset($days[$key]);
+
+              try {
+                $resultMovie->set('field_reservation_period', implode(",", $days) );
+                $resultMovie->save();
+              }
+              catch (\Exception $e) {
+                watchdog_exception('myerrorid', $e);
+              }
+
+              return new JsonResponse([ 'data' => 'Something went wrong,please try again', 'method' => 'GET', 'status'=> 200]);
+
+            }
+            else{
+              $connection = \Drupal\Core\Database\Database::getConnection();
+              $connection->insert('reservations')->fields([ 'day_of_reservation' => $movie_data[3],'time_of_reservation' => date('Y-m-d h:i:s'), 'reserved_movie_name' => $movie_data[1], 'reserved_movie_genre' => $movie_data[2], 'customer_name' => $customer_name ]) ->execute();
+            
+              return new JsonResponse([ 'data' => 'Reservation successfully saved to the database', 'method' => 'GET', 'status'=> 200]);
+              
+            }
+
+          }
+        }
+      }
+
     }
 
     public function export() {
-      
+
       return [
          '#theme' => 'export_list',
          '#title' => 'Our movie export controller title' 
       ];
+
   }
 
   public function import_book() {
