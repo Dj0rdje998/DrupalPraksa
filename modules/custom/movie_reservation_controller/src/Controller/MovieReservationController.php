@@ -169,7 +169,7 @@ class MovieReservationController {
     ];
   }
 
-  public function load_reservations(){
+  public function load_movie_reservations(){
 
     $database = \Drupal::database();
     $query = $database->query('SELECT * FROM reservations');
@@ -179,7 +179,7 @@ class MovieReservationController {
     return [
       '#theme' => 'reservation_list',
       '#items' => $reservations,
-      '#title' => 'These are the active reservations' 
+      '#title' => 'These are the active movie reservations' 
     ];
 
   }

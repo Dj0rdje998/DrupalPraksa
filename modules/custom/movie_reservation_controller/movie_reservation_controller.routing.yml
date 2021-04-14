@@ -48,6 +48,6 @@ movie_reservation_controller.import:
 movie_reservation_controller.load_reservations:
   path: '/all-reservations'
   defaults:
-    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::load_reservations'
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::load_movie_reservations'
   requirements:
     _permission: 'access content'
