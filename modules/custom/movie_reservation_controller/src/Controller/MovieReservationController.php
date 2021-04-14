@@ -169,19 +169,33 @@ class MovieReservationController {
     ];
   }
 
-  public function load_movie_reservations(){
+  public function load_movie_reservations_data($field,$order){
+
+    // $field = "reserved_movie_name";
+    // $order = "ASC";
 
     $database = \Drupal::database();
-    $query = $database->query('SELECT * FROM reservations');
+    $query = $database->query('SELECT * FROM reservations ORDER BY '. $field .' ' . $order);
 
     $reservations = $query->fetchAll();
 
+    return new JsonResponse([ 'data' => $reservations, 'method' => 'GET', 'status'=> 200]);
+           
+
+  }
+
+  public function display_movie_reservations(){
+
+    
+    $response = \Drupal::httpClient()->request('GET', 'http://drupal.praksa/get-reservations-data')->getBody()->getContents();
+
+    $movie_reservation_array = json_decode($response);
+
     return [
       '#theme' => 'reservation_list',
-      '#items' => $reservations,
+      "#items" => $movie_reservation_array->data,
       '#title' => 'These are the active movie reservations' 
     ];
-
   }
 
 }
