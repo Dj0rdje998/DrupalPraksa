@@ -11,9 +11,7 @@ class MovieReservationController {
 
     public function page(){
 
-      $vid = 'movie_type';
-      
-      $movie_genres =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => $vid]);
+      $movie_genres =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'movie_type']);
 
       return [
           '#theme' => 'article_list',
@@ -58,33 +56,26 @@ class MovieReservationController {
     } 
 
     public function save($customer_name,$movie){
-
-      $movies_data = explode("|", $movie);
-
-      $movies = [
-        "id" => $movies_data[0],
-        "title" => $movies_data[1],
-        "genre" => $movies_data[2],
-        "reservation_period" =>$movies_data[3]
-      ];
+      
+      $movies = json_decode($movie);
 
       $database = \Drupal::database();
       $query = $database->query('SELECT * FROM reservations 
         WHERE reserved_movie_name = :reserved_movie_name 
         AND day_of_reservation = :day_of_reservation', 
         [
-        ':reserved_movie_name' => $movies["title"],
-        ':day_of_reservation' => $movies["reservation_period"]
+        ':reserved_movie_name' => $movies->title,
+        ':day_of_reservation' => $movies->reservation_period
       ]);
       $result = $query->fetchAll();
 
-      $resultMovie = Node::load($movies["id"]);
+      $resultMovie = Node::load($movies->id);
 
       $days = explode(",",$resultMovie->field_reservation_period->getString());
 
       foreach ($days as $key => $day) {
         
-        if(strcmp($day, $movies["reservation_period"]) == 0){
+        if(strcmp($day, $movies->reservation_period) == 0){
           if(count($result) >= (int)$resultMovie->field_number_of_attendants->value){
             unset($days[$key]);
 
@@ -105,10 +96,10 @@ class MovieReservationController {
             $connection = \Drupal\Core\Database\Database::getConnection();
             $connection->insert('reservations')
             ->fields([ 
-            'day_of_reservation' => $movies["reservation_period"],
+            'day_of_reservation' => $movies->reservation_period,
             'time_of_reservation' => date('Y-m-d h:i:s'),
-            'reserved_movie_name' => $movies["title"], 
-            'reserved_movie_genre' => $movies["genre"],
+            'reserved_movie_name' => $movies->title, 
+            'reserved_movie_genre' => $movies->genre,
             'customer_name' => $customer_name 
             ])
             ->execute();

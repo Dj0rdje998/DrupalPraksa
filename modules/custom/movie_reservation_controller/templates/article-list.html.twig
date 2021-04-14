@@ -145,7 +145,7 @@
 
        arrayItem.reservation_period.split(",").forEach(element => {
         $("#movies").append($(document.createElement('option')).prop({
-          value: arrayItem.id + "|" + arrayItem.title + "|" + arrayItem.genre + "|" +  element,
+          value:'{"id":'+arrayItem.id+', "title":'+'"'+arrayItem.title +'"'+', "genre":'+arrayItem.genre+', "reservation_period":'+ '"'+ element + '"' +'}',
           text: arrayItem.title + " " + element
         }))
       })  
@@ -159,6 +159,9 @@
   }
 
   function submitReservation(){
+
+
+  console.log($("#movies").val());
 
     $.ajax({
       method:'GET',
