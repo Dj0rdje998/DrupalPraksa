@@ -11,6 +11,9 @@ function movie_reservation_controller_theme($existing,$type,$theme,$path){
         ),
         'export_list' => array(
             'variables' => array('items' => array(), 'title' => '')
+        ),
+        'reservation_list' => array(
+            'variables' => array('items' => array(), 'title' => '')
         )
     ];
 }

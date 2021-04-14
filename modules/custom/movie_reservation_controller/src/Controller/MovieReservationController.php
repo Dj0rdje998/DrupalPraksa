@@ -169,4 +169,19 @@ class MovieReservationController {
     ];
   }
 
+  public function load_reservations(){
+
+    $database = \Drupal::database();
+    $query = $database->query('SELECT * FROM reservations');
+
+    $reservations = $query->fetchAll();
+
+    return [
+      '#theme' => 'reservation_list',
+      '#items' => $reservations,
+      '#title' => 'These are the active reservations' 
+    ];
+
+  }
+
 }

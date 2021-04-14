@@ -1,0 +1,7 @@
+<h1>{{title}}</h1>
+<br>
+{%  for item in items %}
+    <h1>{{item.reserved_movie_name}} reservation</h1>
+    <h4>Reserved by: {{item.customer_name}}</h4>
+    <p>Reserfed for: {{item.day_of_reservation}}, and reservation was made on: {{item.time_of_reservation}}</p>
+{% endfor %}
