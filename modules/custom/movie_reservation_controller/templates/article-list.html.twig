@@ -43,4 +43,51 @@
 
 </div>
 
+<div class="newsletter_page" id="newsletter_page_1">
+    <h1 class="newsletter_page_1_title">Select date for movie</h1>
+
+    <div id="newsletter_page_1_response_message"></div>
+     <input type="text" id="first_name" name="first_name" placeholder="Please enter your first name">
+     <input type="text" id="last_name" name="last_name" placeholder="Please enter your last name">
+     <input type="text" id="gender" name="gender" placeholder="Please enter your gender">
+    
+
+    <button type="button" class="cancel_btn" id="newsletter_page_1_cancel">Cancel</button>
+    <button type="button" class="submit_btn" id="submit_newsletter_page_1">Next page</button>
+
+</div>
+
+<div class="newsletter_page" id="newsletter_page_2">
+
+  <select name="countries" id="countries">
+  <label>Select a country</label>
+    <option value="0">Select a country:</option>
+  </select>
+  <br>
+
+  <select name="cities" id="cities">
+    <label>Select a country</label>
+  </select>
+
+  <button type="button" class="cancel_btn" id="newsletter_page_2_cancel">Cancel</button>
+  <button type="button" class="submit_btn" id="submit_newsletter_page_2">Next page</button>
+
+</div>
+
+<div class="newsletter_page" id="newsletter_page_3">
+    <h1 class="newsletter_page_1_title">Select date for movie</h1>
+
+    <div id="newsletter_page_1_response_message"></div>
+     <input type="text" id="email" name="email" placeholder="Please enter your email address">
+     <input type="text" id="confirm_email" name="confirm_email" placeholder="Please confirm your email"><br>
+     <input type="text" id="phone_number" name="phone_number" placeholder="Please enter your phone number">
+    
+
+    <button type="button" class="cancel_btn" id="newsletter_page_3_cancel">Cancel</button>
+    <button type="button" class="submit_btn" id="save_subscription">Submit</button>
+
+</div>
+
+<button type="button" id="newsletter" style="float:right;">Join our newsletter</button>
+
 {{ attach_library('movie_reservation_controller/article-list') }}

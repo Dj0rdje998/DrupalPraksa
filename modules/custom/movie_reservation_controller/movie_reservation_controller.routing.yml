@@ -69,3 +69,27 @@ movie_reservation_controller.search_reservations:
   methods:  [GET]
   requirements:
     _permission: 'access content'
+
+movie_reservation_controller.all_countries:
+  path: '/search/countries'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::all_countries'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+movie_reservation_controller.cities_of_state:
+  path: '/search/cities/{country}'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::cities_of_country'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
+
+movie_reservation_controller.save_subscriptions:
+  path: '/save/subscriptions/{subscription}'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::save_subscriptions'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'

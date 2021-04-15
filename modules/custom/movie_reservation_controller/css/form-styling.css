@@ -14,6 +14,17 @@ input:checked + label {
     transform: translate(-50%,-50%);
 }
 
+.newsletter_page{
+    z-index:1;
+    position:absolute;
+    top:50%;
+    left:60%;
+    background-color:white;
+    width:60vw;
+    height:60vh;
+    transform: translate(-50%,-50%);
+}
+
 .cancel_btn{
     display:block;
     position:absolute;
