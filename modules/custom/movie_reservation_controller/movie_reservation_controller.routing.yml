@@ -46,8 +46,18 @@ movie_reservation_controller.import:
     _permission: 'access content'
 
 movie_reservation_controller.load_reservations:
+  path: '/get-reservations-data/{field}/{order}'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::load_movie_reservations_data'
+    field: 'id'
+    order: 'ASC'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
+
+movie_reservation_controller.display_reservation_data:
   path: '/all-reservations'
   defaults:
-    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::load_movie_reservations'
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::display_movie_reservations'
   requirements:
     _permission: 'access content'

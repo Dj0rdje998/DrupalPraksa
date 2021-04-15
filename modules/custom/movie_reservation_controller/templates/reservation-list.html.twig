@@ -1,7 +1,25 @@
 <h1>{{title}}</h1>
+
+<label for="orders">Choose a value to order by:</label>
+
+<select name="orders" id="orders">
+  <option value="reserved_movie_name|ASC">A-Z</option>
+  <option value="reserved_movie_name|DESC">Z-A</option>
+  <option value="id|DESC">From newest to odlest</option>
+  <option value="id|ASC">From oldest to newest</option>
+</select>
+
+<button type="button"  id="submit">Filter</button>
+
 <br>
-{%  for item in items %}
-    <h1>{{item.reserved_movie_name}} reservation</h1>
-    <h4>Reserved by: {{item.customer_name}}</h4>
-    <p>Reserfed for: {{item.day_of_reservation}}, and reservation was made on: {{item.time_of_reservation}}</p>
-{% endfor %}
+
+<div id="movie_reservations">
+    {%  for item in items %}
+        <h1  id="reservation_title">{{item.reserved_movie_name}} reservation</h1>
+        <h4 id="reservation_customer_name">Reserved by: {{item.customer_name}}</h4>
+        <p id="reservation_day_and_time">Reserfed for: {{item.day_of_reservation}}, and reservation was made on: {{item.time_of_reservation}}</p>
+    {% endfor %}
+</div>
+
+
+{{ attach_library('movie_reservation_controller/movie-reservation-list') }}

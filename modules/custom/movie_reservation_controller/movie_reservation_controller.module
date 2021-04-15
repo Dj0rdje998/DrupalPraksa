@@ -3,17 +3,17 @@
 function movie_reservation_controller_theme($existing,$type,$theme,$path){
     
     return [
-        'article_list' => array(
-            'variables' => array('items' => array(), 'title' => '')
-        ),
-        'data_list' => array(
-            'variables' => array('items' => array(), 'title' => '')
-        ),
-        'export_list' => array(
-            'variables' => array('items' => array(), 'title' => '')
-        ),
-        'reservation_list' => array(
-            'variables' => array('items' => array(), 'title' => '')
-        )
+        'article_list' => [
+            'variables' => ['items' => [], 'title' => '']
+        ],
+        'data_list' => [
+            'variables' => ['items' => [], 'title' => '']
+        ],
+        'export_list' => [
+            'variables' => ['items' => [], 'title' => '']
+        ],
+        'reservation_list' => [
+            'variables' => ['items' => [], 'title' => '']
+        ]
     ];
 }
