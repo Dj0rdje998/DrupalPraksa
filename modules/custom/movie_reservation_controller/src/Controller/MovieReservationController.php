@@ -196,4 +196,37 @@ class MovieReservationController {
     ];
   }
 
+  public function search_movie_reservations(){
+
+    $values = \Drupal::request()->query->all();
+
+    $database = \Drupal::database();
+
+    $query = $database->select('reservations','r')->fields('r', ['id', 'day_of_reservation', 'time_of_reservation', 'reserved_movie_name']);
+    
+    foreach ($values as $key => $value) {
+      $query->condition('r.'. $key , $value, '=');
+    }
+
+    $result = $query->execute();
+
+    $items = array();
+
+    foreach ($result as $record) {
+      $items[] = $record;
+    }
+
+    $response = new Response();
+
+    if(empty($items)){
+      $response->setContent("Sorry, we couldn't find any mathces");
+      return $response;
+    }
+    else{
+      return new JsonResponse([ 'data' => $items, 'method' => 'GET', 'status'=> 200]);
+    }
+    
+
+  }
+
 }

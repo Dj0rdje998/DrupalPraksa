@@ -61,3 +61,11 @@ movie_reservation_controller.display_reservation_data:
     _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::display_movie_reservations'
   requirements:
     _permission: 'access content'
+
+movie_reservation_controller.search_reservations:
+  path: '/search-reservations'
+  defaults:
+    _controller: '\Drupal\movie_reservation_controller\Controller\MovieReservationController::search_movie_reservations'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'
