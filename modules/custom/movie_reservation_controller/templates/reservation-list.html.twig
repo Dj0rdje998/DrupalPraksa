@@ -21,51 +21,5 @@
     {% endfor %}
 </div>
 
-<script
-  src="https://code.jquery.com/jquery-3.6.0.js"
-  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-  crossorigin="anonymous"></script>
 
-
-<script>
-
-    $( "#submit" ).click(function(e) {
-
-        $("#movie_reservations").text('');
-
-        $.ajax({
-            method:'GET',
-            url:'/get-reservations-data/'+$("#orders").val().split("|")[0]+'/'+$("#orders").val().split("|")[1],
-            success:function(response)
-                {
-
-                response["data"].forEach(response => {
-
-
-                    $("#movie_reservations")
-                    .append(
-                        $(document.createElement('h1'))
-                        .prop({id: 'reservation_title'})
-                        .html(response.reserved_movie_name + ' reservation')
-                    )
-                    .append(
-                        $(document.createElement('h4'))
-                        .prop({id: 'reservation_customer_name'})
-                        .html('Reserved by: ' + response.customer_name)
-                    )
-                    .append(
-                        $(document.createElement('p'))
-                        .prop({id: 'reservation_day_and_time'})
-                        .html('Reserfed for: ' + response.day_of_reservation + ', and reservation was made on: ' + response.time_of_reservation)
-                    )
-
-                });
-
-            }
-
-        }); 
-
-    });
-
-
-</script>
+{{ attach_library('movie_reservation_controller/movie-reservation-list') }}

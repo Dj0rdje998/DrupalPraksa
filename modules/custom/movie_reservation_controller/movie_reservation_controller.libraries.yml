@@ -3,3 +3,19 @@ form-styling:
   css:
     layout:
       css/form-styling.css: {}
+
+movie-reservation-list:
+  version: 1.x
+  js:
+    js/movie-reservation-list.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+
+article-list:
+  version: 1.x
+  js:
+    js/article-list.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

@@ -169,10 +169,8 @@ class MovieReservationController {
     ];
   }
 
-  public function load_movie_reservations_data($field,$order){
+  public function load_movie_reservations_data($field, $order){
 
-    // $field = "reserved_movie_name";
-    // $order = "ASC";
 
     $database = \Drupal::database();
     $query = $database->query('SELECT * FROM reservations ORDER BY '. $field .' ' . $order);
