@@ -4,7 +4,6 @@ namespace Drupal\movie_reservation_controller\Controller;
 
 
 use \Drupal\node\Entity\Node;
-// use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
