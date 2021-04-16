@@ -242,15 +242,6 @@
     });
   }
 
-  jQuery("#newsletter_page_1_cancel").click(function(){
-    newsletter_page_1.hide();
-  });
-
-  
-  jQuery("#newsletter_page_2_cancel").click(function(){
-    newsletter_page_2.hide();
-  });
-
-  jQuery("#newsletter_page_3_cancel").click(function(){
-    newsletter_page_3.hide();
+  jQuery(".newsletter_cancel").click(function(){
+    jQuery("#" + jQuery(this).attr('name')).hide();
   });
