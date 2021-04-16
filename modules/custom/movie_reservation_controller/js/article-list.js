@@ -243,5 +243,5 @@
   }
 
   jQuery(".newsletter_cancel").click(function(){
-    jQuery("#" + jQuery(this).attr('name')).hide();
+    jQuery(jQuery(this).attr('name')).hide();
   });
