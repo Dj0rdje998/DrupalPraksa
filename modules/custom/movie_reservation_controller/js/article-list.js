@@ -2,10 +2,23 @@
   
   const reserve = jQuery("#reserve").click(openPopup).hide();
 
+  jQuery("#submit_newsletter_page_2").click(openNewsletterPage3);
+
   const popup = jQuery("#popup").hide();
+
+  const newsletter_page_1 = jQuery("#newsletter_page_1").hide();
+  const newsletter_page_2 = jQuery("#newsletter_page_2").hide();
+  const newsletter_page_3 = jQuery("#newsletter_page_3").hide();
+
+
+  jQuery("#cities").hide();
+
+
+  jQuery("#submit_newsletter_page_1").click(openNewsletterPage2);
 
   jQuery( ".movies_for_type" ).hide();
   
+  jQuery( "#newsletter" ).click(openNewsletterPage1);
 
   jQuery( "#cancel" ).click(cancelPopup);
 
@@ -116,3 +129,119 @@
     });
 
   }
+
+  function openNewsletterPage1(){
+
+    newsletter_page_1.show();
+
+  }
+
+  function openNewsletterPage2(){
+
+    newsletter_page_1.hide();
+    newsletter_page_2.show();
+
+    jQuery.ajax({
+      method:'GET',
+      url:'http://drupal.praksa/search/countries',
+      success:function(response)
+      {
+
+       
+        response["data"].forEach(element => {
+          jQuery("#countries").append(jQuery(document.createElement('option')).prop({
+            value:element.id,
+            text: element.name
+          }))
+        })  
+
+      }
+      
+    });
+
+    jQuery('#countries').on('change', function() {
+      if(jQuery('#countries').val() != 0){
+
+        jQuery("#cities").empty()
+        .append('<option selected="selected" value="0">Select a city</option>');
+        
+        jQuery.ajax({
+          method:'GET',
+          url:'http://drupal.praksa/search/cities/'+jQuery('#countries').val(),
+          success:function(response)
+          {
+           
+            response["data"].forEach(element => {
+              jQuery("#cities").append(jQuery(document.createElement('option')).prop({
+                value:element.name,
+                text: element.name
+              }))
+            })  
+    
+          }
+          
+        })
+
+        jQuery("#cities").show();
+      }
+    });
+
+  }
+
+  function openNewsletterPage3(){
+    newsletter_page_2.hide();
+    newsletter_page_3.show();
+    jQuery("#save_subscription").on('click', function (){
+
+      let data = '{';
+
+      let inputArray = ['first_name', 'last_name', 'gender','phone_number','email','countries','cities'];
+
+      inputArray.forEach((element,index) =>{
+        if (index === inputArray.length - 1){ 
+          if(element === 'countries' || element === 'cities'){
+            data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"'
+          }else{
+            data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"'
+          }
+        }
+        else{
+          if(element === 'countries' || element === 'cities'){
+            data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"' + ','
+          }else{
+            data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"' + ','
+          }
+        }
+      });
+
+      data+= '}';
+
+      const parsedData = JSON.parse(data);
+
+      if(!Object.values(parsedData).includes("") || !Object.values(parsedData).includes("Select a country:") || !Object.values(parsedData).includes("Select a city:")){
+
+        if(parsedData.email === jQuery("#confirm_email").val()){
+          jQuery.ajax({
+            method:'GET',
+            url:'http://drupal.praksa/save/subscriptions/'+data,
+            success:function(response){
+              alert(response["data"]);
+            }
+          });
+        }
+        else{
+          alert("The emails do not match each other");
+        }
+
+      }
+      else{
+        alert("All required fields are not set");
+
+      }
+      
+    });
+  }
+
+  jQuery(".newsletter_cancel").click(function(){
+    jQuery(jQuery(this).attr('name')).hide();
+  });

@@ -225,8 +225,74 @@ class MovieReservationController {
     else{
       return new JsonResponse([ 'data' => $items, 'method' => 'GET', 'status'=> 200]);
     }
-    
 
+  }
+
+  public function all_countries(){
+
+    $database = \Drupal::database();
+    $query = $database->query("SELECT * from country");
+    $results = $query->fetchAll();
+    
+    return new JsonResponse([ "data" => $results, "method" => "GET", "status"=> 200]);
+
+
+  }
+
+  public function cities_of_country($country){
+
+    $database = \Drupal::database();
+    $query = $database->query("SELECT * FROM city 
+      WHERE country_id  = :country_id", 
+      [
+      ":country_id" => $country,
+    ]);
+
+    $results = $query->fetchAll();
+
+
+    return new JsonResponse([ "data" => $results, "method" => "GET", "status"=> 200]);
+
+  }
+
+  public function save_subscriptions($subscription){
+    
+    $subscription_data = json_decode($subscription);
+
+    $database = \Drupal::database();
+    $query = $database->query("SELECT * FROM subscriptions 
+      WHERE email  = :email", 
+      [
+      ":email" => $subscription_data->email,
+    ]);
+
+    $results = $query->fetchAll();
+
+    if(empty($results)){
+
+      $connection = \Drupal\Core\Database\Database::getConnection();
+      $connection->insert("subscriptions")
+      ->fields([ 
+      "first_name" => $subscription_data->first_name,
+      "last_name" => $subscription_data->last_name, 
+      "gender" => $subscription_data->gender,
+      "phone_number" => $subscription_data->phone_number,
+      "email" => $subscription_data->email,
+      "country" => $subscription_data->countries,
+      "city" => $subscription_data->cities,
+      ])
+      ->execute();
+      
+      return new JsonResponse([ 'data' => 'Subscription added successfully', 'method' => 'GET', 'status'=> 200]);
+    }
+    else{
+      return new JsonResponse([ 'data' => 'There is a subscription with the specified email address', 'method' => 'GET', 'status'=> 501]);
+    }
+
+    return new JsonResponse([ 'data' => 'Something went wrong in the proccess of adding subscription', 'method' => 'GET', 'status'=> 501]);
+
+  
+    
   }
 
 }
