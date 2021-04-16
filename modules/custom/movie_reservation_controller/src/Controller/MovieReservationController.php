@@ -278,8 +278,8 @@ class MovieReservationController {
       "gender" => $subscription_data->gender,
       "phone_number" => $subscription_data->phone_number,
       "email" => $subscription_data->email,
-      "country" => $subscription_data->country,
-      "city" => $subscription_data->city,
+      "country" => $subscription_data->countries,
+      "city" => $subscription_data->cities,
       ])
       ->execute();
       
@@ -289,7 +289,7 @@ class MovieReservationController {
       return new JsonResponse([ 'data' => 'There is a subscription with the specified email address', 'method' => 'GET', 'status'=> 501]);
     }
 
-    return $response;
+    return new JsonResponse([ 'data' => 'Something went wrong in the proccess of adding subscription', 'method' => 'GET', 'status'=> 501]);
 
   
     

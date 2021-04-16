@@ -18,7 +18,7 @@
 
   jQuery( ".movies_for_type" ).hide();
   
-  jQuery( "#newsletter" ).click(newsletterPage1);
+  jQuery( "#newsletter" ).click(openNewsletterPage1);
 
   jQuery( "#cancel" ).click(cancelPopup);
 
@@ -130,7 +130,7 @@
 
   }
 
-  function newsletterPage1(){
+  function openNewsletterPage1(){
 
     newsletter_page_1.show();
 
@@ -173,7 +173,7 @@
            
             response["data"].forEach(element => {
               jQuery("#cities").append(jQuery(document.createElement('option')).prop({
-                value:element.id,
+                value:element.name,
                 text: element.name
               }))
             })  
@@ -193,18 +193,30 @@
     newsletter_page_3.show();
     jQuery("#save_subscription").on('click', function (){
 
-      
-      const data = '{"first_name":'+'"' + jQuery("#first_name").val() + '"' + ', "last_name":'+'"'+ jQuery("#last_name").val() +'"'
-      +', "gender":'+ '"' + jQuery("#gender").val() + '"' 
-      +', "phone_number":'+ '"'+ jQuery("#phone_number").val() + '"' +', "email":'+ '"'+ jQuery("#email").val() + '"' 
-      +', "country":'+ '"'+ jQuery( "#countries option:selected" ).text() + '"'  +', "city":'+ '"'+ jQuery( "#cities option:selected" ).text() + '"' +
-      '}';
-      
-      if(jQuery("#first_name").val() && jQuery("#last_name").val() && 
-      jQuery("#gender").val() && jQuery("#phone_number").val() 
-      && jQuery("#email").val() && jQuery( "#countries option:selected" ).text() && jQuery( "#cities option:selected" ).text()){
+      let data = '{';
 
-        if(jQuery("#email").val() === jQuery("#confirm_email").val()){
+      // "first_name":'+'"' + jQuery("#first_name").val() + '"'
+
+      let fruits = ['first_name', 'last_name', 'gender','phone_number','email','countries','cities'];
+
+      fruits.forEach((element,index) =>{
+        if(index == 5){
+          data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"' + ','
+        }
+        else if(index == 6){
+          data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"'
+        }else{
+          data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"' + ','
+        }
+      });
+
+      data+= '}';
+
+      const parsedData = JSON.parse(data);
+
+      if(!Object.values(parsedData).includes("") || !Object.values(parsedData).includes("Select a country:") || !Object.values(parsedData).includes("Select a city:")){
+
+        if(parsedData.email === jQuery("#confirm_email").val()){
           jQuery.ajax({
             method:'GET',
             url:'http://drupal.praksa/save/subscriptions/'+data,
