@@ -195,18 +195,22 @@
 
       let data = '{';
 
-      // "first_name":'+'"' + jQuery("#first_name").val() + '"'
+      let inputArray = ['first_name', 'last_name', 'gender','phone_number','email','countries','cities'];
 
-      let fruits = ['first_name', 'last_name', 'gender','phone_number','email','countries','cities'];
-
-      fruits.forEach((element,index) =>{
-        if(index == 5){
-          data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"' + ','
+      inputArray.forEach((element,index) =>{
+        if (index === inputArray.length - 1){ 
+          if(element === 'countries' || element === 'cities'){
+            data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"'
+          }else{
+            data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"'
+          }
         }
-        else if(index == 6){
-          data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"'
-        }else{
-          data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"' + ','
+        else{
+          if(element === 'countries' || element === 'cities'){
+            data+= '"' + element+'"'+ ':'+'"' + jQuery("#" + element +   " option:selected").text() + '"' + ','
+          }else{
+            data+= '"'+ element + '"' + ':'+'"' + jQuery("#" + element).val() + '"' + ','
+          }
         }
       });
 
